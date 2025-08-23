@@ -1,27 +1,28 @@
 {
-	"name": "chat-app",
+	"name": "chatcluster",
 	"version": "1.0.0",
-	"description": "",
-	"main": "server.js",
+	"description": "ChatCluster - Modern Real-Time Chat Application",
+	"main": "index.js",
 	"scripts": {
-		"server": "nodemon backend/server.js",
-		"start": "node backend/server.js",
-		"build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
+		"dev:backend": "cd backend && npm run dev",
+		"dev:frontend": "cd frontend && npm run dev",
+		"start:backend": "cd backend && npm start",
+		"start:frontend": "cd frontend && npm run preview",
+		"install:backend": "cd backend && npm install",
+		"install:frontend": "cd frontend && npm install",
+		"install:all": "npm run install:backend && npm run install:frontend",
+		"build:frontend": "cd frontend && npm run build",
+		"docker:build:backend": "cd backend && docker build -t adeshghadage/chatapp-backend:latest .",
+		"docker:build:frontend": "cd frontend && docker build -t adeshghadage/chatapp-frontend:latest .",
+		"docker:build:all": "npm run docker:build:backend && npm run docker:build:frontend",
+		"docker:push:backend": "docker push adeshghadage/chatapp-backend:latest",
+		"docker:push:frontend": "docker push adeshghadage/chatapp-frontend:latest",
+		"docker:push:all": "npm run docker:push:backend && npm run docker:push:frontend"
 	},
-	"type": "module",
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"bcryptjs": "^2.4.3",
-		"cookie-parser": "^1.4.6",
-		"dotenv": "^16.6.1",
-		"express": "^4.21.2",
-		"jsonwebtoken": "^9.0.2",
-		"mongoose": "^8.8.5",
-		"socket.io": "^4.8.1"
-	},
+	"keywords": ["chat", "realtime", "react", "nodejs", "mongodb", "socket.io"],
+	"author": "Adesh Ghadage",
+	"license": "MIT",
 	"devDependencies": {
-		"nodemon": "^3.1.8"
+		"concurrently": "^8.2.2"
 	}
 }

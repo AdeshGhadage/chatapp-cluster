@@ -16,7 +16,7 @@ services:
       - chat-network
 
   # Backend Service
-  backend:
+  chat-backend:
     build:
       context: ./backend
       dockerfile: dockerfile
@@ -34,12 +34,9 @@ services:
       - JWT_SECRET=AdeshSecret
     networks:
       - chat-network
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
 
   # Frontend Service
-  frontend:
+  chat-frontend:
     build:
       context: ./frontend
       dockerfile: dockerfile
@@ -49,7 +46,7 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - backend
+      - chat-backend
     networks:
       - chat-network
 

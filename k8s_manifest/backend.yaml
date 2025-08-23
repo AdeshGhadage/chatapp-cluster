@@ -3,6 +3,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: chat-backend
+  labels:
+    app: chat-backend
 spec:
   replicas: 1
   selector:
@@ -16,25 +18,27 @@ spec:
       containers:
       - name: chat-backend
         image: adeshghadage/chatapp-backend:latest
-        imagePullPolicy: Always
         ports:
         - containerPort: 3001
         env:
+        - name: PORT
+          value: "3001"
         - name: MONGO_DB_URI
-          value: mongodb://root:password@mongodb:27017/chatapp?authSource=admin
+          value: "mongodb://mongo-service:27017/chat-app"
         - name: JWT_SECRET
-          value: AdeshSecret
+          value: "AdeshSecret"
         - name: NODE_ENV
-          value: production
+          value: "production"
+        imagePullPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: chat-backend
+  name: chat-backend-service
 spec:
+  type: ClusterIP
   selector:
     app: chat-backend
   ports:
-    - protocol: TCP
-      port: 3001
-      targetPort: 3001
+  - port: 3001
+    targetPort: 3001
