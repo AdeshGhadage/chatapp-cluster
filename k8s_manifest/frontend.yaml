@@ -1,0 +1,35 @@
+# frontend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-frontend
+  template:
+    metadata:
+      labels:
+        app: chat-frontend
+    spec:
+      containers:
+      - name: chat-frontend
+        image: adeshghadage/chatapp-frontend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-frontend
+spec:
+  type: NodePort 
+  ports:
+    - port: 3000
+      targetPort: 3000
+      protocol: TCP   
+  selector:
+    app: chat-frontend
+  

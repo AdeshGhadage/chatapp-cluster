@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongo:
+    image: mongo:7.0
+    container_name: chatapp-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: chat-app
+    networks:
+      - chat-network
+
+  # Backend Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: dockerfile
+    image: adeshghadage/chatapp-backend:latest
+    container_name: chatapp-backend
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongo
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - MONGO_DB_URI=mongodb://mongo:27017/chat-app
+      - JWT_SECRET=AdeshSecret
+    networks:
+      - chat-network
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: dockerfile
+    image: adeshghadage/chatapp-frontend:latest
+    container_name: chatapp-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - chat-network
+
+# Networks
+networks:
+  chat-network:
+    driver: bridge
+
+# Volumes
+volumes:
+  mongo_data:
+    driver: local
