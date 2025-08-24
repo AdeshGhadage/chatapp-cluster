@@ -89,15 +89,64 @@ npm run dev
 
 ### 🐳 Docker Deployment
 
-1. **Quick Start with Docker Compose**
+#### Using NPM Scripts (Recommended)
 ```bash
-docker-compose up --build
+# Build and start all services
+npm run docker:up:build
+
+# Monitor logs
+npm run docker:logs
+
+# Check status
+npm run docker:status
+
+# Restart services
+npm run docker:restart
+
+# Clean rebuild
+npm run docker:rebuild
 ```
 
-2. **Manual Build and Push**
+#### Using Development Helper Script
 ```bash
-# Build and push all images
-./deploy.sh
+# Make script executable
+chmod +x docker-dev.sh
+
+# Build and start with health checks
+./docker-dev.sh build
+
+# View specific service logs
+./docker-dev.sh logs-backend
+./docker-dev.sh logs-frontend
+./docker-dev.sh logs-mongo
+
+# Check service health
+./docker-dev.sh status
+
+# Access container shell for debugging
+./docker-dev.sh shell-backend
+```
+
+#### Traditional Docker Compose
+```bash
+# Quick Start
+docker-compose up --build -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+```
+
+### 📊 Access Points
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:5000
+- **MongoDB**: localhost:27017
+
+### 📚 Documentation
+- [📖 Docker Development Guide](DOCKER_DEVELOPMENT_GUIDE.md) - Comprehensive setup and usage guide
+- [📝 Configuration Changes](CONFIGURATION_CHANGES_SUMMARY.md) - Summary of recent improvements
 
 # Or build specific services
 ./deploy.sh latest backend
